@@ -1,0 +1,44 @@
+name: mi primer pipeline
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+
+  init:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '21'
+    - name: Instalar dependencias
+      run: | 
+        echo "Instalando dependencias"
+        npm install
+        echo "Dependencias instaladas"
+  test:
+    runs-on: ubuntu-latest
+    needs: init
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '21'
+    - name: run tests
+      run: | 
+        echo "corriendo test"
+        npm install
+        npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [init, test]
+    steps:
+    - uses: actions/checkout@v4
+ 
